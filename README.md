@@ -22,19 +22,22 @@ A practice payments platform built for SRE interview preparation. The product is
 
 ## Local cluster
 
-Requirements: Docker, [kind](https://kind.sigs.k8s.io/) and kubectl.
+Requirements: Docker, [kind](https://kind.sigs.k8s.io/), kubectl and make.
 
 ```bash
-kind create cluster --config infra/kind/cluster.yaml
-kubectl get nodes
+make help            # list available targets
+make cluster-up      # create the cluster
+make cluster-status  # check that the node is Ready
 ```
 
-This creates the `pagorapido` cluster (context `kind-pagorapido`) with a single node and maps host ports 80 and 443 for the ingress. A single node is intentional, to save resources on an 8 GB machine.
+`make cluster-up` runs `kind create cluster --config infra/kind/cluster.yaml`.
+
+This creates the `pagorapido` cluster (context `kind-pagorapido`) with a single node and maps host ports 80 and 443 for the ingress. A single node is intentional, to keep resource usage low on a laptop: the node uses about 0.85 GB of memory (measured with `docker stats`).
 
 To delete it:
 
 ```bash
-kind delete cluster --name pagorapido
+make cluster-down
 ```
 
 ## CI/CD goals
