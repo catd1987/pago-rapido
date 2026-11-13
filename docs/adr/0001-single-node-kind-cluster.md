@@ -10,7 +10,7 @@ PagoRápido runs locally on a MacBook Air (Apple Silicon, 16 GB of RAM) before m
 The cluster must be:
 - reproducible from code, so it can be deleted and recreated with one command;
 - light on memory and CPU;
-- able to run an ingress controller on localhost:80.
+- able to run a gateway controller, reached from the laptop (see ADR 0002).
 
 A first cluster was created with the Kubernetes built into Docker Desktop.
 
@@ -18,7 +18,7 @@ A first cluster was created with the Kubernetes built into Docker Desktop.
 
 Use [kind](https://kind.sigs.k8s.io/) with a single `control-plane` node, defined in `infra/kind/cluster.yaml`:
 - cluster name `pagorapido` (context `kind-pagorapido`);
-- node label `ingress-ready=true`, required by ingress-nginx on kind;
+- node label `ingress-ready=true`, added for ingress-nginx on kind. No longer needed since ADR 0002 replaced ingress-nginx; kept for now and to be revisited in PR-3;
 - host ports 80 and 443 mapped to the node;
 - node image pinned to `kindest/node:v1.37.0`, so the Kubernetes version does not depend on the installed kind version.
 
@@ -31,7 +31,7 @@ Create it with `kind create cluster --config infra/kind/cluster.yaml`.
 | Docker Desktop Kubernetes | Not defined in code, tied to the Docker Desktop version, single fixed setup |
 | k3d | Not evaluated. Candidate if kind turns out too heavy |
 | minikube | Not evaluated |
-| Multi-node kind | Extra nodes cost memory and add nothing for the current stories |
+| Multi-node kind (1 control-plane + 2 workers) | Extra nodes cost memory and add nothing for the current stories. Multi-node scheduling will be practiced later on EKS |
 
 ## Consequences
 

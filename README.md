@@ -32,7 +32,7 @@ make cluster-status  # check that the node is Ready
 
 `make cluster-up` runs `kind create cluster --config infra/kind/cluster.yaml`.
 
-This creates the `pagorapido` cluster (context `kind-pagorapido`) with a single node and maps host ports 80 and 443 for the ingress. A single node is intentional, to keep resource usage low on a laptop: the node uses about 0.85 GB of memory (measured with `docker stats`).
+This creates the `pagorapido` cluster (context `kind-pagorapido`) with a single node and maps host ports 80 and 443 (not used yet: the gateway is reached with `kubectl port-forward`, see [ADR 0002](docs/adr/0002-gateway-api-with-envoy-gateway.md)). A single node is intentional, to keep resource usage low on a laptop: the node uses about 0.85 GB of memory (measured with `docker stats`).
 
 To delete it:
 
@@ -50,7 +50,7 @@ The pipeline is part of what this project demonstrates:
 
 ## Roadmap
 
-1. **Local (now):** kind, ingress-nginx with Helm, apps and database.
+1. **Local (now):** kind, Gateway API with Envoy Gateway and Helm ([ADR 0002](docs/adr/0002-gateway-api-with-envoy-gateway.md)), apps and database.
 2. **CI/CD:** approval chains, reusable workflows, ephemeral runners.
 3. **Cloud (after the CKAD exam, February 2027):** AWS with Terraform, EKS, RDS, SNS/SQS.
 
